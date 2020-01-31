@@ -1,0 +1,20 @@
+Fuga de memoria(Memory leak):
+Ocurre cuando el heap de la RAM se queda sin memoria disponible. El heap es la cantidad de memoria dinamica disponible para ser utilizada por
+los programas. Todas los elementos de un programa (variables, metodos, hilos, servicios etc), hacen uso de esta memoria y esta es liberada cuando
+el elemento que la utiliza deja de estar referenciado y utilizado. La memoria es desreferenciada e inutilizada cuando el scope del elemento que la
+usa llega a su fin, por ejemplo:
+- La memoria de un objeto declarado dentro de un metodo es liberada cuando el metodo finaliza
+- La memoria de un objeto declarado globalmente dentro de un activity es liberado cuando el activity se destruye.
+
+El responsable de esto es el garbage collector, el cual es un proceso que el sistema ejecuta cuando la memoria del heap se ve reducida, el desarrollador
+no necesita realizar ninguna accion relacionada al garbage collector, esto es un proceso automatico del sistema. Sin embargo existen casos en los
+cuales el garbage collector no puede definir si un elemento referenciado sigue siendo utilizado, entonces no puede liberar esta memoria y ocurre
+un memory leak.
+
+El caso mas comun de memory leak es cuando una actividad o contexto son referenciados(guardados como variable/objeto) y utilizados como recurso
+en un proceso dentro del ciclo de vida de la misma Activity(Ej, decodifircar un recurso en un bitmap en un thread), entonces cuando la activity llega
+a su fin(por ejemplo se rota la pantalla) y el proceso no ha terminado, el activity o context sigue referenciado dentro del proceso y por lo tanto no
+puede liberar dicha memoria.
+
+La forma de evitar este fallo es evitar la referencia de objetos como el context o activity que pueden ser destruidos por eventos repentinos y que
+dicha referencia no permita su liberación de memoria.
